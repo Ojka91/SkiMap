@@ -19,6 +19,19 @@ var app = new Vue({
                 console.log("Error");
             });
         },
+
+        writeNewPost: function () {
+
+            // https://firebase.google.com/docs/database/web/read-and-write
+
+            // Values
+            var message = {
+                message: "location...",
+                name: firebase.auth().currentUser.displayName,
+            }
+
+            firebase.database().ref('location').push(message)
+
      
     },
     mounted: function() {

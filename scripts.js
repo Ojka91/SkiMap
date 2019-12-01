@@ -61,7 +61,7 @@ function login() {
     trackUserLocation: true
     }));
   */      updatePositionInterval = setInterval(getLocation, 1000);
-  updatePositionInterval = setInterval(getInfo, 1000);
+  getBullets = setInterval(getInfo, 1000);
     }).catch(function (err) {
         console.log(err);
         console.log("Error");
@@ -73,6 +73,7 @@ function logout() {
         console.log("Logged out " + result)
         isLogging = true;
         clearInterval(updatePositionInterval);
+        clearInterval(getBullets);
 
         // Sign-out successful.
     }, function (error) {
@@ -122,7 +123,7 @@ function showPosition(position) {
 
 
 function addMarkers(long, lat, name) {
-
+    console.log("adding marker")
     // add markers to map
     geojson.features.forEach(function (marker) {
 

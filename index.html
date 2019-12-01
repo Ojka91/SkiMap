@@ -9,35 +9,44 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SkiMap</title>
 
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
+
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <div id="app">
-
-
+   
         <div class="header">
             <h1 class="title">SkiMap</h1>
+            <button class="login" id="login">Login with Google</button>
+            <button class="login" id="logout">Logout</button>
         </div>
         <div class="body">
-            <button class="login" @click="login()">Login with Google</button>
+            
+            
+            
+            <div id='map' class ="map" ></div>
+            
+            
         </div>
+        
+        <button>writenewpost</button>
 
-        <button @click="writeNewPost()">writenewpost</button>
 
-
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="scripts.js"></script>
 
 
-  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
 
-  <!-- Add Firebase products that you want to use -->
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
 
 
 

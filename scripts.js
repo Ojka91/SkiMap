@@ -53,7 +53,15 @@ function login() {
 
     firebase.auth().signInWithPopup(provider).then(function (result) {
         console.log("Logged in " + result)
-        updatePositionInterval = setInterval(getLocation, 1000);
+        // Add geolocate control to the map.
+/*map.addControl(new mapboxgl.GeolocateControl({
+    positionOptions: {
+    enableHighAccuracy: true
+    },
+    trackUserLocation: true
+    }));
+  */      updatePositionInterval = setInterval(getLocation, 1000);
+  updatePositionInterval = setInterval(getInfo, 1000);
     }).catch(function (err) {
         console.log(err);
         console.log("Error");
@@ -78,9 +86,12 @@ function logout() {
 function updateLocation() {
 
     console.log("Update message")
-    firebase.database().ref('location/'+userName).push(message)
+    firebase.database().ref('location/'+userName).set(message)
 
 };
+
+
+
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -100,19 +111,17 @@ function showPosition(position) {
         isLogging = false;
     }
 
-    geojson.features[0].geometry.coordinates = center;
-    geojson.features[0].properties.title = firebase.auth().currentUser.displayName;
+   
     message.user = firebase.auth().currentUser.displayName;
     userName = firebase.auth().currentUser.displayName;
     message.lat = this.lat;
     message.long = this.lng;
-    addMarkers();
     updateLocation();
     console.log(position);
 }
 
 
-function addMarkers() {
+function addMarkers(long, lat, name) {
 
     // add markers to map
     geojson.features.forEach(function (marker) {
@@ -136,3 +145,23 @@ function addMarkers() {
 
 
 }
+
+
+function getInfo () {
+
+    firebase.database().ref('location/').on('value', function (data) {
+        
+        var messages = data.val();
+
+        for (var key in messages) {
+          
+            var element = messages[key];
+            geojson.features[0].geometry.coordinates =  new mapboxgl.LngLat(element.long, element.lat);
+            geojson.features[0].properties.title = element.user;
+            addMarkers(element.long, element.lat, element.user);
+        }
+        console.log(messages)
+    })
+
+
+};

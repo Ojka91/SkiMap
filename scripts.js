@@ -22,7 +22,7 @@ var geojson = {
     }],
 }
 
-
+var userName;
 var updatePositionInterval;
 var message = {
     user: '',
@@ -32,11 +32,15 @@ var message = {
 var isLogging = true;
 var logoutBtn = document.getElementById("logout");
 logoutBtn.addEventListener("click", function(){
+    loginBtn.style.display = "block";
+    logoutBtn.style.display = 'none';
     logout();
 });
 
 var loginBtn = document.getElementById("login");
 loginBtn.addEventListener("click", function () {
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = 'block';
     login();
 });
 
@@ -74,7 +78,7 @@ function logout() {
 function updateLocation() {
 
     console.log("Update message")
-    firebase.database().ref('location').push(message)
+    firebase.database().ref('location/'+userName).push(message)
 
 };
 
@@ -99,6 +103,7 @@ function showPosition(position) {
     geojson.features[0].geometry.coordinates = center;
     geojson.features[0].properties.title = firebase.auth().currentUser.displayName;
     message.user = firebase.auth().currentUser.displayName;
+    userName = firebase.auth().currentUser.displayName;
     message.lat = this.lat;
     message.long = this.lng;
     addMarkers();

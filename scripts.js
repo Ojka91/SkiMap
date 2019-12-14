@@ -22,6 +22,7 @@ var geojson = {
     }],
 }
 
+var markerToDelete=[];
 var markers =[];
 var getLocationPosition;
 var userName;
@@ -142,23 +143,25 @@ function showPosition(position) {
 function addMarkers(long, lat, name) {
     console.log("adding marker")
     // add markers to map
-    markers.forEach(function (marker) {
+    this.markers.forEach(function (marker) {
+        marker.forEach(function(markerInfo){
 
         // create a HTML element for each feature
         var el = document.createElement('div');
         el.className = 'marker';
 
         // make a marker for each feature and add to the map
-        new mapboxgl.Marker(el)
-            .setLngLat(marker.geometry.coordinates)
-            .addTo(map);
-        new mapboxgl.Marker(el)
-            .setLngLat(marker.geometry.coordinates)
+       this.markerToDelete.push( new mapboxgl.Marker(el)
+            .setLngLat(markerInfo.geometry.coordinates)
+            .addTo(map));
+        this.markerToDelete.push(new mapboxgl.Marker(el)
+            .setLngLat(markerInfo.geometry.coordinates)
             .setPopup(new mapboxgl.Popup({
                     offset: 25
                 }) // add popups
-                .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
-            .addTo(map);
+                .setHTML('<h3>' + markerInfo.properties.title + '</h3><p>' + markerInfo.properties.description + '</p>'))
+            .addTo(map));
+        })
     });
 
 
@@ -170,14 +173,20 @@ function getInfo () {
     firebase.database().ref('location/').on('value', function (data) {
         
         var messages = data.val();
-        markers = [];
+        if(markerToDelete.length>0){
+            this.markerToDelete.forEach(function (el){
+                el.remove();
+            })
+        }
+        
+        this.markers = [];
 
         for (var key in messages) {
           
             var element = messages[key];
             geojson.features[0].geometry.coordinates =  new mapboxgl.LngLat(element.long, element.lat);
             geojson.features[0].properties.title = element.user;
-            markers.push(geojson.features);
+            this.markers.push(geojson.features);
            addMarkers(element.long, element.lat, element.user)
         }
        

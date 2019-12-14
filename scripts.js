@@ -142,7 +142,7 @@ function showPosition(position) {
 function addMarkers(long, lat, name) {
     console.log("adding marker")
     // add markers to map
-    geojson.features.forEach(function (marker) {
+    markers.forEach(function (marker) {
 
         // create a HTML element for each feature
         var el = document.createElement('div');
@@ -177,7 +177,7 @@ function getInfo () {
             var element = messages[key];
             geojson.features[0].geometry.coordinates =  new mapboxgl.LngLat(element.long, element.lat);
             geojson.features[0].properties.title = element.user;
-            markers.push(geojson);
+            markers.push(geojson.features);
            addMarkers(element.long, element.lat, element.user)
         }
        

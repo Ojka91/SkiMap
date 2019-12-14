@@ -23,7 +23,7 @@ var geojson = {
 }
 
 var markers =[];
-
+var getLocationPosition;
 var userName;
 var updatePositionInterval;
 var message = {
@@ -63,7 +63,7 @@ function login() {
     trackUserLocation: true
     }));
   */     
-  navigator.geolocation.watchPosition(getLocation, errorHandler);
+ getLocationPosition = navigator.geolocation.watchPosition(getLocation, errorHandler);
   ref = firebase.database().ref('location/'+firebase.auth().currentUser.displayName)
   ref.on('child_changed', function(childSnapshot, prevChildKey) {
     getInfo();
@@ -81,10 +81,12 @@ function errorHandler(){
 }
 
 function logout() {
+    navigator.geolocation.clearWatch(getLocationPosition);
+    firebase.database().ref('location/'+userName).remove();  
+
     firebase.auth().signOut().then(function (result) {
         console.log("Logged out " + result)
         isLogging = true;
-        firebase.database().ref('location/'+userName).remove();  
 
       
 

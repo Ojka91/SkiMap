@@ -63,6 +63,7 @@ function login() {
     trackUserLocation: true
     }));
   */     
+ getInfo();
  getLocationPosition = navigator.geolocation.watchPosition(getLocation, errorHandler);
 
 
@@ -143,7 +144,6 @@ function addMarkers(long, lat, name) {
     // add markers to map
     geojson.features.forEach(function (marker) {
 
-        marker.remove();
         // create a HTML element for each feature
         var el = document.createElement('div');
         el.className = 'marker';
@@ -177,6 +177,7 @@ function getInfo () {
             var element = messages[key];
             geojson.features[0].geometry.coordinates =  new mapboxgl.LngLat(element.long, element.lat);
             geojson.features[0].properties.title = element.user;
+            markers.push(geojson);
            addMarkers(element.long, element.lat, element.user)
         }
        

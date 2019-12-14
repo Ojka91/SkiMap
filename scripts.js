@@ -22,6 +22,8 @@ var geojson = {
     }],
 }
 
+var markers =[];
+
 var userName;
 var updatePositionInterval;
 var message = {
@@ -60,20 +62,29 @@ function login() {
     },
     trackUserLocation: true
     }));
-  */      updatePositionInterval = setInterval(getLocation, 1000);
-  getBullets = setInterval(getInfo, 1000);
+  */     
+  navigator.geolocation.watchPosition(getLocation, errorHandler);
+  ref = firebase.database().ref('location/'+firebase.auth().currentUser.displayName)
+  ref.on('child_changed', function(childSnapshot, prevChildKey) {
+    getInfo();
+  });
+
     }).catch(function (err) {
         console.log(err);
         console.log("Error");
     });
 };
 
+function errorHandler(){
+    alert("Error retreieving geolocation data")
+
+}
+
 function logout() {
     firebase.auth().signOut().then(function (result) {
         console.log("Logged out " + result)
         isLogging = true;
-        clearInterval(updatePositionInterval);
-        clearInterval(getBullets);
+      
 
         // Sign-out successful.
     }, function (error) {
@@ -153,14 +164,16 @@ function getInfo () {
     firebase.database().ref('location/').on('value', function (data) {
         
         var messages = data.val();
+        markers = [];
 
         for (var key in messages) {
           
             var element = messages[key];
             geojson.features[0].geometry.coordinates =  new mapboxgl.LngLat(element.long, element.lat);
             geojson.features[0].properties.title = element.user;
-            addMarkers(element.long, element.lat, element.user);
+            markers.push(addMarkers(element.long, element.lat, element.user))
         }
+        markers;
         console.log(messages)
     })
 

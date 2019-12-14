@@ -64,10 +64,7 @@ function login() {
     }));
   */     
  getLocationPosition = navigator.geolocation.watchPosition(getLocation, errorHandler);
-  ref = firebase.database().ref('location/'+firebase.auth().currentUser.displayName)
-  ref.on('child_changed', function(childSnapshot, prevChildKey) {
-    getInfo();
-  });
+
 
     }).catch(function (err) {
         console.log(err);
@@ -81,7 +78,7 @@ function errorHandler(){
 }
 
 function logout() {
-    navigator.geolocation.clearWatch(getLocationPosition);
+    navigator.geolocation.clearWatch(getLocation)
     firebase.database().ref('location/'+userName).remove();  
 
     firebase.auth().signOut().then(function (result) {
@@ -104,6 +101,10 @@ function updateLocation() {
     console.log("Update message")
     firebase.database().ref('location/'+userName).set(message)
 
+    ref = firebase.database().ref('location/'+firebase.auth().currentUser.displayName)
+    ref.on('child_changed', function(childSnapshot, prevChildKey) {
+      getInfo();
+    });
 };
 
 

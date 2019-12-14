@@ -84,6 +84,8 @@ function logout() {
     firebase.auth().signOut().then(function (result) {
         console.log("Logged out " + result)
         isLogging = true;
+        firebase.database().ref('location/'+userName).remove();  
+
       
 
         // Sign-out successful.

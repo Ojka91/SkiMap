@@ -22,6 +22,7 @@ var geojson = {
     }],
 }
 
+var checkingDBOnChange = true;
 var markerToDelete=[];
 var markers =[];
 var getLocationPosition;
@@ -105,10 +106,14 @@ function updateLocation() {
     console.log("Update message")
     firebase.database().ref('location/'+userName).set(message)
 
-    ref = firebase.database().ref('location/'+firebase.auth().currentUser.displayName)
-    ref.on('child_changed', function(childSnapshot, prevChildKey) {
-      getInfo();
-    });
+    if(checkingDBOnChange){
+
+        ref = firebase.database().ref('location/'+firebase.auth().currentUser.displayName)
+        ref.on('child_changed', function(childSnapshot, prevChildKey) {
+            getInfo();
+        });
+        checkingDBOnChange = false;
+    }
 };
 
 

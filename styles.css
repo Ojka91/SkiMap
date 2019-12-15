@@ -1,5 +1,6 @@
 html, body{
-    background-color: rgb(95, 149, 197);
+    background: -webkit-linear-gradient(to bottom, #00f260, #0575e6); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #00f260, #0575e6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     height: 100vh;
     min-height: 100vh;
     margin: 0px;
@@ -10,7 +11,7 @@ html, body{
 }
 
 button{
-    border: 1px black solid;
+    border: 1px #1b00ff solid;
 }
 
 .header{
@@ -28,10 +29,29 @@ button{
     height: 70%;
 }
 
+.title{
+    font-size: 40px;
+   color: #182771;
+}
+
 .login{
-    width: 35%;
-    height: 15%;
-    background-color: rgba(255, 0, 0, 0);
+    width: 38%;
+    height: 21%;
+    background-color: rgba(0, 130, 206);
+    color:white;
+}
+
+.logout{
+    width: 38%;
+    height: 21%;
+    background-color: red;
+    color:white;
+}
+
+.logOutMessage{
+    color: red;
+    margin-bottom: 5px;
+    display: none;
 }
 
 .map{

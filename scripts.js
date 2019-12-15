@@ -95,6 +95,8 @@ function logout() {
         console.log(error)
         // An error happened.
     });
+    document.getElementById('logOutMessage').style.display = "block";
+    setTimeout(function(){  document.getElementById('logOutMessage').style.display = "none"; }, 3000);
 };
 
 // https://firebase.google.com/docs/database/web/read-and-write
